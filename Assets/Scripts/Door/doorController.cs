@@ -1,35 +1,32 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class doorController : MonoBehaviour {
+public class DoorController : MonoBehaviour {
 
-    public int buttonsPressed;
     public int numberOfButtons;
-    private AudioSource audioclip;
+    private int buttonsPressed;
+    private AudioSource audioSource;
+    private Animation animation;
     private bool isDoorUp;
 
     // Use this for initialization
     void Start () {
         buttonsPressed = 0;
-	}
+        animation = GetComponent<Animation>();
+        audioSource = GetComponent<AudioSource>();
+    }
 
     void RecieveData()
     {
         if (buttonsPressed == numberOfButtons) {
-            GetComponent<Animation>().Play("goup");
-            audioclip = GetComponent<AudioSource>();
-            audioclip.Play();
+            animation.Play("goup");
+            audioSource.Play();
             isDoorUp = true;
         }
-        if (buttonsPressed != numberOfButtons && isDoorUp == true)
+        else if (isDoorUp)
         {
-            GetComponent<Animation>().Play("godown");
+            animation.Play("godown");
             isDoorUp = false;
         }
-    }
-	
-	// Update is called once per frame
-	void Update () {
-        //Debug.Log("Buttons Pressed: " + buttonsPressed + " | Door Up: " + isDoorUp);
     }
 }

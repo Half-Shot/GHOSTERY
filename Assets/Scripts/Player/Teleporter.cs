@@ -2,41 +2,39 @@
 using System.Collections;
 
 public class Teleporter : MonoBehaviour {
-
-    private GameObject theplayer;
-    private GameObject theghost;
+    private GameObject thePlayer;
+    private GameObject theGhost;
+    private Camera camera;
     private Vector3 teleportPosition;
     private Vector3 playerPosition;
-    public RenderTexture Redner;
+    public RenderTexture Render;
 
     // Use this for initialization
     void Start () {
-        theplayer = GameObject.Find("PlayerController");
-        theghost = GameObject.Find("theghost");
+        thePlayer = GameObject.Find("PlayerController");
+        theGhost = GameObject.Find("theghost");
+        camera = GetComponent<Camera>();
     }
-	
-	// Update is called once per frame
-	void Update () {
 
+  	// Update is called once per frame
+  	void Update () {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             Application.LoadLevel("menu");
         }
-        GetComponent<Camera>().targetTexture = Redner;
+        camera.targetTexture = Render;
         if (Input.GetMouseButtonDown(0))
         {
             RaycastHit hit;
             Physics.Raycast(transform.position, transform.forward, out hit);
-            Debug.Log("Player clicked: " + hit.point);
-            theplayer = (GameObject.Find("PlayerController"));
             teleportPosition = hit.point;
             teleportPosition.y = (teleportPosition.y + 1);
-            if (teleportPosition.y != 1 && (hit.collider.gameObject.name != "theghost")) {
-                playerPosition = theplayer.transform.position;
+            if (teleportPosition.y != 1 && (hit.collider.gameObject != theGhost)) {
+                playerPosition = thePlayer.transform.position;
                 playerPosition.y = (playerPosition.y - 1);
-                theplayer.transform.position = teleportPosition;
-                theghost.transform.position = playerPosition;
-                theghost.transform.eulerAngles = new Vector3 ((theplayer.transform.rotation.x - 90), theplayer.transform.eulerAngles.y, 0);
+                thePlayer.transform.position = teleportPosition;
+                theGhost.transform.position = playerPosition;
+                theGhost.transform.eulerAngles = new Vector3 ((thePlayer.transform.rotation.x - 90), thePlayer.transform.eulerAngles.y, 0);
             }
         }
     }

@@ -1,49 +1,43 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class buttonController : MonoBehaviour {
-    private Light lt;
-    private AudioSource audioclip;
-    private float counter;
-    public GameObject door;
+public class ButtonController : MonoBehaviour {
+    private Light light;
+    private AudioSource audioSource;
+    private DoorController doorController;
+    private Animation animation;
+    private int counter;
+    public GameObject door; //where is this set?
 
-    // Use this for initialization
-    void Start () {
-        counter = 0;
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+  // Use this for initialization
+  void Start () {
+    counter = 0;
+    light = GetComponent<Light>();
+    audioSource = GetComponent<AudioSource>();
+    doorController = door.GetComponent<doorController>();
+    animation = transform.parent.gameObject.GetComponent<Animation>();
+  }
 
-    void OnTriggerEnter(Collider other)
-    {
-        if (counter == 0) { 
-            var target_object_ref = transform.parent.gameObject;
-            var target_object_anim = target_object_ref.GetComponent<Animation>();
-            target_object_anim.Play("godown");
-            lt = GetComponent<Light>();
-            lt.intensity = 2;
-            audioclip = GetComponent<AudioSource>();
-            audioclip.Play();
-            door.GetComponent<doorController>().buttonsPressed++;
-            door.SendMessage("RecieveData");
-        }
-        counter = (counter + 1);
+  void OnTriggerEnter(Collider other)
+  {
+    if (counter == 0) {
+        animation.Play("godown");
+        light.intensity = 2;
+        audioSource.Play();
+        doorController.buttonsPressed++;
+        door.SendMessage("RecieveData");
     }
+    counter++;
+  }
 
-    void OnTriggerExit(Collider other)
-    {
-        counter = (counter - 1);
-        if (counter == 0) {
-            var target_object_ref = transform.parent.gameObject;
-            var target_object_anim = target_object_ref.GetComponent<Animation>();
-            target_object_anim.Play("goup");
-            lt = GetComponent<Light>();
-            lt.intensity = 0;
-            door.GetComponent<doorController>().buttonsPressed--;
-            door.SendMessage("RecieveData");
-        }
-    }
+  void OnTriggerExit(Collider other)
+  {
+      counter--;//Before the if?
+      if (counter == 0) {
+          animation.Play("goup");
+          light.intensity = 0;
+          doorController.buttonsPressed--;
+          door.SendMessage("RecieveData");
+      }
+  }
 }
