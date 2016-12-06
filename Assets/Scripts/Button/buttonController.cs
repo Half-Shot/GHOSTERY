@@ -10,7 +10,8 @@ public class buttonController : MonoBehaviour {
     // Use this for initialization
     void Start () {
         counter = 0;
-	}
+        lt = GetComponent<Light>();
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -23,7 +24,6 @@ public class buttonController : MonoBehaviour {
             var target_object_ref = transform.parent.gameObject;
             var target_object_anim = target_object_ref.GetComponent<Animation>();
             target_object_anim.Play("godown");
-            lt = GetComponent<Light>();
             lt.intensity = 2;
             audioclip = GetComponent<AudioSource>();
             audioclip.Play();

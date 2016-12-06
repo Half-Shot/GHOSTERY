@@ -16,6 +16,7 @@ public class doorController : MonoBehaviour {
     void RecieveData()
     {
         if (buttonsPressed == numberOfButtons) {
+            GetComponent<Animation>().Play("goup1");
             GetComponent<Animation>().Play("goup");
             audioclip = GetComponent<AudioSource>();
             audioclip.Play();
@@ -23,6 +24,7 @@ public class doorController : MonoBehaviour {
         }
         if (buttonsPressed != numberOfButtons && isDoorUp == true)
         {
+            GetComponent<Animation>().Play("godown1");
             GetComponent<Animation>().Play("godown");
             isDoorUp = false;
         }
